@@ -20,6 +20,20 @@ class App extends React.Component {
 
   componentDidMount() {
     console.log("didMount");
+    this.getMovies()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("didUpdate");
+    console.log("prev", prevProps, prevState);
+    console.log("this", this.props, this.state);
+    if (prevState.sort_by !== this.state.sort_by) {
+      console.log("call api");
+      this.getMovies()
+    }
+  }
+
+  getMovies = () => {
     fetch(
       `${API_URL}/discover/movie?api_key=${API_KEY_3}&sort_by=${
         this.state.sort_by
@@ -36,6 +50,7 @@ class App extends React.Component {
         });
       });
   }
+
   deleteMovie = movie => {
     console.log(movie.id);
     const updateMovies = this.state.movies.filter(item => item.id !== movie.id);
